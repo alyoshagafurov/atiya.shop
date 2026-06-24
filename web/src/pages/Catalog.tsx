@@ -51,6 +51,9 @@ export function Catalog() {
           <span className="brand-dot">.shop</span>
         </div>
         <div className="topbar-right">
+          <button className="icon-btn" onClick={() => nav('/admin')} aria-label="Вход для администратора">
+            <Icon name="lock" />
+          </button>
           {isInTelegram() && (
             <button
               className="icon-btn"
@@ -132,10 +135,6 @@ export function Catalog() {
           ))}
         </div>
       )}
-
-      <footer className="catalog-footer">
-        <button className="admin-link" onClick={() => nav('/admin')}>Управление</button>
-      </footer>
     </div>
   );
 }
