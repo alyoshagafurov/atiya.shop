@@ -9,11 +9,12 @@ export async function publicRoutes(app: FastifyInstance) {
     whatsapp: config.whatsappNumber,
   }));
 
-  // Диагностика хранилища: persistent=true → данные на Volume и переживают деплой
+  // Диагностика: persistent=true → данные на Volume; commit → задеплоенная версия
   app.get('/api/health', async () => ({
     ok: true,
     persistent: DATA_IS_PERSISTENT,
     products: listProducts().length,
+    commit: (process.env.RAILWAY_GIT_COMMIT_SHA ?? '').slice(0, 7) || 'local',
   }));
 
   app.get('/api/products', async (req) => {
