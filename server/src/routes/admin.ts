@@ -1,8 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { randomUUID } from 'node:crypto';
-import { createWriteStream } from 'node:fs';
-import { pipeline } from 'node:stream/promises';
 import path from 'node:path';
+import sharp from 'sharp';
 import {
   listProducts,
   createProduct,
@@ -12,7 +11,9 @@ import {
 } from '../db';
 import { checkPassword, makeToken, verifyToken } from '../auth';
 
-const ALLOWED_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
+// Максимальный размер по большей стороне и качество JPEG для загружаемых фото.
+const MAX_SIDE = 1280;
+const JPEG_QUALITY = 80;
 
 export async function adminRoutes(app: FastifyInstance) {
   app.post('/api/admin/login', async (req, reply) => {
@@ -46,11 +47,19 @@ export async function adminRoutes(app: FastifyInstance) {
     const urls: string[] = [];
     for await (const part of (req as any).parts()) {
       if (part.type !== 'file') continue;
-      let ext = path.extname(part.filename || '').toLowerCase();
-      if (!ALLOWED_EXT.has(ext)) ext = '.jpg';
-      const name = randomUUID() + ext;
-      await pipeline(part.file, createWriteStream(path.join(UPLOAD_DIR, name)));
-      urls.push('/uploads/' + name);
+      const input = await part.toBuffer();
+      const name = randomUUID() + '.jpg';
+      try {
+        // Поворот по EXIF, ужимаем в рамку MAX_SIDE и сжимаем в JPEG.
+        await sharp(input)
+          .rotate()
+          .resize({ width: MAX_SIDE, height: MAX_SIDE, fit: 'inside', withoutEnlargement: true })
+          .jpeg({ quality: JPEG_QUALITY, mozjpeg: true })
+          .toFile(path.join(UPLOAD_DIR, name));
+        urls.push('/uploads/' + name);
+      } catch {
+        // Не изображение или повреждено — пропускаем файл.
+      }
     }
     return { urls };
   });

@@ -14,6 +14,7 @@
     "dotenv": "^16.4.5",
     "fastify": "^4.28.1",
     "grammy": "^1.30.0",
+    "sharp": "^0.35.2",
     "tsx": "^4.19.1"
   },
   "devDependencies": {
