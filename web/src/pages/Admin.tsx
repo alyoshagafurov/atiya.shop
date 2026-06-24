@@ -7,6 +7,14 @@ import { Icon } from '../components/Icon';
 
 const TOKEN_KEY = 'atiya-admin-token';
 
+function pluralProducts(n: number): string {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'товар';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'товара';
+  return 'товаров';
+}
+
 export function Admin() {
   const [token, setToken] = useState<string>(() => localStorage.getItem(TOKEN_KEY) || '');
   if (!token) {
@@ -42,12 +50,13 @@ function Login({ onLogin }: { onLogin: (t: string) => void }) {
         <button className="icon-btn" onClick={() => nav('/')} aria-label="Назад">
           <Icon name="back" />
         </button>
-        <span className="topbar-title">Админка</span>
+        <span />
         <span />
       </header>
       <form className="login" onSubmit={submit}>
+        <div className="login-lock"><Icon name="lock" size={26} /></div>
         <div className="login-brand">{cfg.brand}.shop</div>
-        <p className="login-sub">Вход для администратора</p>
+        <p className="login-sub">Панель управления · вход для администратора</p>
         <input
           type="password"
           value={password}
@@ -110,9 +119,17 @@ function Panel({ token, onLogout }: { token: string; onLogout: () => void }) {
         <button className="icon-btn" onClick={() => nav('/')} aria-label="На витрину">
           <Icon name="back" />
         </button>
-        <span className="topbar-title">Товары · {products.length}</span>
+        <span />
         <button className="link-btn" onClick={onLogout}>Выйти</button>
       </header>
+
+      <div className="page-head">
+        <div className="page-head-eyebrow">Только для администратора</div>
+        <h1 className="page-head-title">Панель управления</h1>
+        <p className="page-head-sub">
+          {products.length} {pluralProducts(products.length)} в каталоге
+        </p>
+      </div>
 
       <button className="btn primary add-btn" onClick={openNew}>
         <Icon name="plus" size={18} /> Добавить товар

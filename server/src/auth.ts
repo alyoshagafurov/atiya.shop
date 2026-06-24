@@ -12,10 +12,17 @@ export function makeToken(): string {
 
 const TOKEN = makeToken();
 
+function safeEqual(a: string, b: string): boolean {
+  const ba = Buffer.from(a);
+  const bb = Buffer.from(b);
+  if (ba.length !== bb.length) return false;
+  return crypto.timingSafeEqual(ba, bb);
+}
+
 export function checkPassword(pw: unknown): boolean {
-  return typeof pw === 'string' && pw.length > 0 && pw === config.adminPassword;
+  return typeof pw === 'string' && pw.length > 0 && safeEqual(pw, config.adminPassword);
 }
 
 export function verifyToken(token?: string): boolean {
-  return !!token && token === TOKEN;
+  return !!token && safeEqual(token, TOKEN);
 }

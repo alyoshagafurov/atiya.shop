@@ -67,6 +67,8 @@ export function Catalog() {
         </div>
       </header>
 
+      <p className="catalog-tagline">Бутик вещей из Турции и Китая</p>
+
       <div className="search">
         <Icon name="search" size={18} />
         <input
@@ -120,8 +122,8 @@ export function Catalog() {
       ) : products.length === 0 ? (
         <div className="empty">
           <Icon name="bag" size={40} />
-          <p>Пока ничего нет</p>
-          <span>Товары появятся здесь, как только тётя их добавит.</span>
+          <p>{q || active ? 'Ничего не найдено' : 'Скоро здесь появятся товары'}</p>
+          <span>{q || active ? 'Попробуйте изменить запрос или категорию.' : 'Загляните чуть позже — мы готовим новинки.'}</span>
         </div>
       ) : (
         <div className="grid">

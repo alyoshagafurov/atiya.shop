@@ -83,6 +83,7 @@ export function ProductPage() {
       )}
 
       <div className="product-info">
+        {product.category && <div className="product-eyebrow">{product.category}</div>}
         <h1 className="product-title">{product.title}</h1>
         <div className="product-price">{formatPrice(product.price, cfg.currency)}</div>
         {product.description && <p className="product-desc">{product.description}</p>}

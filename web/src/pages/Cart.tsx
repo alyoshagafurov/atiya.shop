@@ -6,6 +6,14 @@ import { formatPrice } from '../format';
 import { isInTelegram, tgUser, openExternal } from '../telegram';
 import { Icon } from '../components/Icon';
 
+function pluralItems(n: number): string {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'товар';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'товара';
+  return 'товаров';
+}
+
 export function CartPage() {
   const nav = useNavigate();
   const cfg = useConfig();
@@ -53,13 +61,23 @@ export function CartPage() {
         <button className="icon-btn" onClick={() => nav('/')} aria-label="Назад">
           <Icon name="back" />
         </button>
-        <span className="topbar-title">Корзина</span>
-        {count > 0 && (
+        <span />
+        {count > 0 ? (
           <button className="link-btn" onClick={clear}>
             Очистить
           </button>
+        ) : (
+          <span />
         )}
       </header>
+
+      <div className="page-head">
+        <div className="page-head-eyebrow">{cfg.brand}.shop</div>
+        <h1 className="page-head-title">Корзина</h1>
+        {count > 0 && (
+          <p className="page-head-sub">{count} {pluralItems(count)} на {formatPrice(total, cfg.currency)}</p>
+        )}
+      </div>
 
       {count === 0 ? (
         <div className="empty">
@@ -123,7 +141,7 @@ export function CartPage() {
               <Icon name="whatsapp" size={20} /> Заказать в WhatsApp
             </button>
             <p className="cart-hint">
-              Заказ откроется в WhatsApp — отправьте сообщение тёте, и она ответит по наличию и оплате.
+              Заказ откроется в WhatsApp — отправьте сообщение, и продавец ответит по наличию и оплате.
             </p>
           </div>
         </>
