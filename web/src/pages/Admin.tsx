@@ -55,7 +55,7 @@ function Login({ onLogin }: { onLogin: (t: string) => void }) {
       </header>
       <form className="login" onSubmit={submit}>
         <div className="login-lock"><Icon name="lock" size={26} /></div>
-        <div className="login-brand">{cfg.brand}.shop</div>
+        <div className="login-brand">{cfg.brand}</div>
         <p className="login-sub">Панель управления · вход для администратора</p>
         <input
           type="password"

@@ -32,7 +32,7 @@ export function CartPage() {
   };
 
   const buildMessage = (): string => {
-    const lines = [`Здравствуйте! Хочу заказать в ${cfg.brand}.shop:`, ''];
+    const lines = [`Здравствуйте! Хочу заказать в ${cfg.brand}:`, ''];
     items.forEach((it, i) => {
       lines.push(
         `${i + 1}. ${it.product.title} — ${it.qty} шт × ${formatPrice(it.product.price, cfg.currency)} = ${formatPrice(
@@ -81,7 +81,7 @@ export function CartPage() {
       </header>
 
       <div className="page-head">
-        <div className="page-head-eyebrow">{cfg.brand}.shop</div>
+        <div className="page-head-eyebrow">{cfg.brand}</div>
         <h1 className="page-head-title">Корзина</h1>
         {count > 0 && (
           <p className="page-head-sub">{count} {pluralItems(count)} на {formatPrice(total, cfg.currency)}</p>

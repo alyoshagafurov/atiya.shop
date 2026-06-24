@@ -3,7 +3,7 @@ import { api, type ShopConfig } from './api';
 
 let cache: ShopConfig | null = null;
 
-const fallback: ShopConfig = { brand: 'Atiya', currency: 'смн', whatsapp: '' };
+const fallback: ShopConfig = { brand: 'Turkiya TJ', currency: 'смн', whatsapp: '' };
 
 export function useConfig(): ShopConfig {
   const [cfg, setCfg] = useState<ShopConfig>(cache ?? fallback);

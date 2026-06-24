@@ -10,6 +10,6 @@ export const config = {
   adminPassword: process.env.ADMIN_PASSWORD ?? 'atiya',
   whatsappNumber: (process.env.WHATSAPP_NUMBER ?? '').replace(/[^\d]/g, ''),
   publicUrl: (process.env.PUBLIC_URL ?? '').trim().replace(/\/$/, ''),
-  brand: process.env.BRAND_NAME ?? 'Atiya',
+  brand: process.env.BRAND_NAME ?? 'Turkiya TJ',
   currency: process.env.CURRENCY ?? 'смн',
 };

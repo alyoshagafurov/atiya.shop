@@ -49,7 +49,6 @@ export function Catalog() {
       <header className="topbar">
         <div className="brand">
           <span className="brand-name">{cfg.brand}</span>
-          <span className="brand-dot">.shop</span>
         </div>
         <div className="topbar-right">
           <button className="icon-btn" onClick={() => setMenuOpen((o) => !o)} aria-label="Меню">
