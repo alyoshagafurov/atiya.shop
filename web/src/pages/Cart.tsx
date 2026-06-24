@@ -14,6 +14,7 @@ export function CartPage() {
   const user = tgUser();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [preview, setPreview] = useState(false);
 
   const buildMessage = (): string => {
     const lines = [`Здравствуйте! Хочу заказать в ${cfg.brand}.shop:`, ''];
@@ -118,7 +119,7 @@ export function CartPage() {
               <span>Итого</span>
               <strong>{formatPrice(total, cfg.currency)}</strong>
             </div>
-            <button className="btn whatsapp" disabled={!canOrder} onClick={order}>
+            <button className="btn whatsapp" disabled={!canOrder} onClick={() => setPreview(true)}>
               <Icon name="whatsapp" size={20} /> Заказать в WhatsApp
             </button>
             <p className="cart-hint">
@@ -126,6 +127,24 @@ export function CartPage() {
             </p>
           </div>
         </>
+      )}
+
+      {preview && (
+        <div className="sheet" onClick={() => setPreview(false)}>
+          <div className="sheet-card" onClick={(e) => e.stopPropagation()}>
+            <div className="sheet-head">
+              <strong>Ваш заказ</strong>
+              <button className="icon-btn small" onClick={() => setPreview(false)} aria-label="Закрыть">
+                <Icon name="close" size={20} />
+              </button>
+            </div>
+            <div className="preview-msg">{buildMessage()}</div>
+            <button className="btn whatsapp" onClick={() => { setPreview(false); order(); }}>
+              <Icon name="whatsapp" size={20} /> Отправить в WhatsApp
+            </button>
+            <p className="cart-hint">Это сообщение откроется в WhatsApp</p>
+          </div>
+        </div>
       )}
     </div>
   );

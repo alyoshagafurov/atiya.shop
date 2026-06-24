@@ -116,9 +116,10 @@ export function deleteProduct(id: string): boolean {
   return db.prepare('DELETE FROM products WHERE id = ?').run(id).changes > 0;
 }
 
-export function listCategories(): string[] {
+export function listCategories(): { name: string; count: number }[] {
   return db
-    .prepare(`SELECT DISTINCT category FROM products WHERE category <> '' ORDER BY category`)
-    .all()
-    .map((r: any) => r.category);
+    .prepare(
+      `SELECT category AS name, COUNT(*) AS count FROM products WHERE category <> '' AND available = 1 GROUP BY category ORDER BY category`,
+    )
+    .all() as { name: string; count: number }[];
 }

@@ -88,6 +88,10 @@ function Panel({ token, onLogout }: { token: string; onLogout: () => void }) {
 
   const openNew = () => { setEditing({ ...empty }); setShowForm(true); };
   const openEdit = (p: Product) => { setEditing({ ...p }); setShowForm(true); };
+  const duplicate = (p: Product) => {
+    setEditing({ ...p, id: undefined, title: p.title + ' (копия)' });
+    setShowForm(true);
+  };
 
   const remove = async (p: Product) => {
     if (!confirm(`Удалить «${p.title}»?`)) return;
@@ -130,6 +134,9 @@ function Panel({ token, onLogout }: { token: string; onLogout: () => void }) {
             <div className="admin-row-actions">
               <button className="chip toggle" onClick={() => toggle(p)}>
                 {p.available ? 'В наличии' : 'Скрыт'}
+              </button>
+              <button className="icon-btn small" onClick={() => duplicate(p)} aria-label="Дублировать" title="Дублировать">
+                <Icon name="copy" size={18} />
               </button>
               <button className="icon-btn small" onClick={() => openEdit(p)} aria-label="Изменить">
                 <Icon name="edit" size={18} />

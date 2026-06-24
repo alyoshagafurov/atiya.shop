@@ -6,6 +6,12 @@ export interface Product {
   category: string;
   photos: string[];
   available: boolean;
+  created_at: number;
+}
+
+export interface CategoryInfo {
+  name: string;
+  count: number;
 }
 
 export interface ShopConfig {
@@ -39,7 +45,7 @@ export const api = {
   },
 
   product: (id: string) => j<Product>('/api/products/' + id),
-  categories: () => j<string[]>('/api/categories'),
+  categories: () => j<CategoryInfo[]>('/api/categories'),
 
   login: (password: string) =>
     j<{ token: string }>('/api/admin/login', {

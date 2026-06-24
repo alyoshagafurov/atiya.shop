@@ -10,6 +10,7 @@ export function ProductCard({ product }: { product: Product }) {
   const { add, qtyOf } = useCart();
   const cfg = useConfig();
   const qty = qtyOf(product.id);
+  const isNew = Date.now() - product.created_at < 3 * 24 * 60 * 60 * 1000;
 
   return (
     <div className="card" onClick={() => nav('/product/' + product.id)}>
@@ -21,6 +22,7 @@ export function ProductCard({ product }: { product: Product }) {
             <Icon name="image" size={28} />
           </div>
         )}
+        {isNew && <span className="card-badge-new">Новинка</span>}
         {product.category && <span className="card-tag">{product.category}</span>}
       </div>
       <div className="card-body">
