@@ -293,13 +293,13 @@ function ProductForm({
           />
         </div>
 
-        <label className="field-label">Название</label>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Например, Платье Zara" />
+        <label className="field-label">Название товара</label>
+        <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Например: Платье Zara" />
 
         <div className="field-row">
           <div>
             <label className="field-label">Цена ({cfg.currency})</label>
-            <input value={price} onChange={(e) => setPrice(e.target.value)} inputMode="decimal" placeholder="180" />
+            <input value={price} onChange={(e) => setPrice(e.target.value)} inputMode="decimal" placeholder="0" />
           </div>
           <div className="cat-wrap">
             <label className="field-label">Категория</label>
@@ -308,7 +308,7 @@ function ProductForm({
               onChange={(e) => setCategory(e.target.value)}
               onFocus={() => setCatFocus(true)}
               onBlur={() => setTimeout(() => setCatFocus(false), 150)}
-              placeholder="Одежда"
+              placeholder="Например: Одежда"
             />
             {catFocus && catSuggestions.length > 0 && (
               <div className="cat-suggest">
@@ -320,11 +320,11 @@ function ProductForm({
           </div>
         </div>
 
-        <label className="field-label">Описание</label>
+        <label className="field-label">Описание товара</label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Размеры, материал, страна…"
+          placeholder="Размеры, материал, цвет, страна…"
           rows={3}
         />
 
