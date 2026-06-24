@@ -175,6 +175,7 @@ function ProductForm({
 }) {
   const cfg = useConfig();
   const fileRef = useRef<HTMLInputElement>(null);
+  const camRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState(initial.title || '');
   const [price, setPrice] = useState(String(initial.price || ''));
   const [category, setCategory] = useState(initial.category || '');
@@ -249,10 +250,22 @@ function ProductForm({
               </button>
             </div>
           ))}
+          <button className="photo-add" onClick={() => camRef.current?.click()} disabled={uploading}>
+            <Icon name="camera" size={22} />
+            <span>Камера</span>
+          </button>
           <button className="photo-add" onClick={() => fileRef.current?.click()} disabled={uploading}>
             <Icon name={uploading ? 'image' : 'plus'} size={22} />
-            <span>{uploading ? 'Загрузка…' : 'Фото'}</span>
+            <span>{uploading ? 'Загрузка…' : 'Галерея'}</span>
           </button>
+          <input
+            ref={camRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            hidden
+            onChange={(e) => pick(e.target.files)}
+          />
           <input
             ref={fileRef}
             type="file"
