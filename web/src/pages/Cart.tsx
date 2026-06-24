@@ -24,6 +24,13 @@ export function CartPage() {
   const [phone, setPhone] = useState('');
   const [preview, setPreview] = useState(false);
 
+  const photoLink = (photos: string[]): string | null => {
+    const src = photos[0];
+    if (!src || src.startsWith('data:')) return null;
+    if (src.startsWith('http')) return src;
+    return window.location.origin + src;
+  };
+
   const buildMessage = (): string => {
     const lines = [`Здравствуйте! Хочу заказать в ${cfg.brand}.shop:`, ''];
     items.forEach((it, i) => {
@@ -33,6 +40,8 @@ export function CartPage() {
           cfg.currency,
         )}`,
       );
+      const link = photoLink(it.product.photos);
+      if (link) lines.push(`   Фото: ${link}`);
     });
     lines.push('', `Итого: ${formatPrice(total, cfg.currency)}`, '');
 
