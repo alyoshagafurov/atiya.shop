@@ -178,11 +178,21 @@ function ProductForm({
   const [title, setTitle] = useState(initial.title || '');
   const [price, setPrice] = useState(String(initial.price || ''));
   const [category, setCategory] = useState(initial.category || '');
+  const [catFocus, setCatFocus] = useState(false);
+  const [allCats, setAllCats] = useState<string[]>([]);
   const [description, setDescription] = useState(initial.description || '');
   const [photos, setPhotos] = useState<string[]>(initial.photos || []);
   const [uploading, setUploading] = useState(false);
   const [busy, setBusy] = useState(false);
   const isEdit = !!initial.id;
+
+  useEffect(() => {
+    api.categories().then((cats) => setAllCats(cats.map((c) => c.name)));
+  }, []);
+
+  const catSuggestions = category.trim()
+    ? allCats.filter((c) => c.toLowerCase().includes(category.toLowerCase()) && c.toLowerCase() !== category.toLowerCase())
+    : allCats;
 
   const pick = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -261,9 +271,22 @@ function ProductForm({
             <label className="field-label">Цена ({cfg.currency})</label>
             <input value={price} onChange={(e) => setPrice(e.target.value)} inputMode="decimal" placeholder="180" />
           </div>
-          <div>
+          <div className="cat-wrap">
             <label className="field-label">Категория</label>
-            <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Одежда" />
+            <input
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              onFocus={() => setCatFocus(true)}
+              onBlur={() => setTimeout(() => setCatFocus(false), 150)}
+              placeholder="Одежда"
+            />
+            {catFocus && catSuggestions.length > 0 && (
+              <div className="cat-suggest">
+                {catSuggestions.map((c) => (
+                  <button key={c} onMouseDown={() => setCategory(c)}>{c}</button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

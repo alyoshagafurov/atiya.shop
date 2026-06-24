@@ -218,9 +218,11 @@ img {
 }
 .admin-link {
   font-size: 13px;
-  color: var(--muted);
-  opacity: 0.5;
-  padding: 8px 16px;
+  color: var(--accent);
+  padding: 10px 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
 }
 
 /* ---------- Product grid ---------- */
@@ -716,4 +718,28 @@ img {
 .sheet-card textarea:focus { border-color: var(--accent); }
 .field-row { display: flex; gap: 10px; }
 .field-row > div { flex: 1; }
+.cat-wrap { position: relative; }
+.cat-suggest {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-top: 4px;
+  box-shadow: var(--shadow);
+  z-index: 10;
+  max-height: 150px;
+  overflow-y: auto;
+}
+.cat-suggest button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--ink);
+}
+.cat-suggest button:active { background: var(--surface-2); }
 .sheet-card .btn { margin-top: 18px; width: 100%; }
