@@ -1,5 +1,5 @@
 interface IconProps {
-  name: 'bag' | 'plus' | 'minus' | 'back' | 'search' | 'trash' | 'check' | 'whatsapp' | 'image' | 'close' | 'edit' | 'copy' | 'external' | 'camera' | 'lock';
+  name: 'bag' | 'plus' | 'minus' | 'back' | 'search' | 'trash' | 'check' | 'whatsapp' | 'image' | 'close' | 'edit' | 'copy' | 'external' | 'camera' | 'lock' | 'menu';
   size?: number;
 }
 
@@ -77,6 +77,13 @@ const paths: Record<IconProps['name'], React.ReactNode> = {
     <>
       <rect x="3" y="11" width="18" height="11" rx="2" />
       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </>
+  ),
+  menu: (
+    <>
+      <path d="M3 6h18" />
+      <path d="M3 12h18" />
+      <path d="M3 18h18" />
     </>
   ),
 };

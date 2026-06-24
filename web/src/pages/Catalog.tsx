@@ -26,6 +26,7 @@ export function Catalog() {
   const [sort, setSort] = useState<SortKey>('new');
   const [q, setQ] = useState('');
   const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     api.categories().then(setCategories).catch(() => {});
@@ -51,26 +52,45 @@ export function Catalog() {
           <span className="brand-dot">.shop</span>
         </div>
         <div className="topbar-right">
-          <button className="icon-btn" onClick={() => nav('/admin')} aria-label="Вход для администратора">
-            <Icon name="lock" />
-          </button>
-          {isInTelegram() && (
-            <button
-              className="icon-btn"
-              onClick={() => openExternal(window.location.href)}
-              aria-label="Открыть в браузере"
-            >
-              <Icon name="external" />
-            </button>
-          )}
-          <button className="icon-btn" onClick={() => nav('/cart')} aria-label="Корзина">
-            <Icon name="bag" />
+          <button className="icon-btn" onClick={() => setMenuOpen((o) => !o)} aria-label="Меню">
+            <Icon name="menu" />
             {count > 0 && <span className="icon-badge">{count}</span>}
           </button>
+          {menuOpen && (
+            <>
+              <div className="menu-backdrop" onClick={() => setMenuOpen(false)} />
+              <div className="menu-pop">
+                <button
+                  className="menu-item cart"
+                  onClick={() => { setMenuOpen(false); nav('/cart'); }}
+                >
+                  <Icon name="bag" size={20} />
+                  <span>Корзина</span>
+                  {count > 0 && <span className="menu-badge">{count}</span>}
+                </button>
+                {isInTelegram() && (
+                  <button
+                    className="menu-item"
+                    onClick={() => { setMenuOpen(false); openExternal(window.location.href); }}
+                  >
+                    <Icon name="external" size={20} />
+                    <span>Браузер</span>
+                  </button>
+                )}
+                <button
+                  className="menu-item"
+                  onClick={() => { setMenuOpen(false); nav('/admin'); }}
+                >
+                  <Icon name="lock" size={20} />
+                  <span>Админка</span>
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </header>
 
-      <p className="catalog-tagline">Бутик вещей из Турции и Китая</p>
+      <p className="catalog-tagline">Товары из Турции</p>
 
       <div className="search">
         <Icon name="search" size={18} />
