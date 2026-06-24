@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import { config } from './config';
-import { UPLOAD_DIR } from './db';
+import { UPLOAD_DIR, DATA_DIR, DATA_DIR_IS_DEFAULT } from './db';
 import { publicRoutes } from './routes/public';
 import { adminRoutes } from './routes/admin';
 import { createBot } from './bot';
@@ -47,6 +47,13 @@ async function main() {
   console.log(
     `[server] http://localhost:${config.port}  бренд: ${config.brand}, валюта: ${config.currency}`,
   );
+  console.log(`[server] данные хранятся в: ${DATA_DIR}`);
+  if (DATA_DIR_IS_DEFAULT) {
+    console.warn(
+      '[server] ВНИМАНИЕ: DATA_DIR не задан — база лежит внутри контейнера и СТИРАЕТСЯ при каждом деплое. ' +
+        'На Railway подключите Volume и укажите DATA_DIR на путь его монтирования (например /data).',
+    );
+  }
   if (!config.whatsappNumber) {
     console.warn('[server] WHATSAPP_NUMBER не задан — кнопка «Заказать» не сработает, пока не укажете номер в .env');
   }
