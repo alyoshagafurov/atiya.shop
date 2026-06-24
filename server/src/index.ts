@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import { config } from './config';
-import { UPLOAD_DIR, DATA_DIR, DATA_DIR_IS_DEFAULT } from './db';
+import { UPLOAD_DIR, DATA_DIR, DATA_IS_PERSISTENT } from './db';
 import { publicRoutes } from './routes/public';
 import { adminRoutes } from './routes/admin';
 import { createBot } from './bot';
@@ -48,10 +48,12 @@ async function main() {
     `[server] http://localhost:${config.port}  бренд: ${config.brand}, валюта: ${config.currency}`,
   );
   console.log(`[server] данные хранятся в: ${DATA_DIR}`);
-  if (DATA_DIR_IS_DEFAULT) {
+  if (DATA_IS_PERSISTENT) {
+    console.log('[server] ✅ хранилище постоянное (Volume) — товары переживают деплой');
+  } else {
     console.warn(
-      '[server] ВНИМАНИЕ: DATA_DIR не задан — база лежит внутри контейнера и СТИРАЕТСЯ при каждом деплое. ' +
-        'На Railway подключите Volume и укажите DATA_DIR на путь его монтирования (например /data).',
+      '[server] ⚠️ ВНИМАНИЕ: данные лежат внутри контейнера и СТИРАЮТСЯ при каждом деплое. ' +
+        'На Railway подключите Volume к сервису — приложение само начнёт писать данные на него.',
     );
   }
   if (!config.whatsappNumber) {

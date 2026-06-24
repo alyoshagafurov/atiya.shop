@@ -4,8 +4,18 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-export const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
-export const DATA_DIR_IS_DEFAULT = !process.env.DATA_DIR;
+
+// Railway автоматически задаёт RAILWAY_VOLUME_MOUNT_PATH, когда подключён Volume.
+// Если DATA_DIR не задан вручную — кладём данные на Volume (если он есть),
+// иначе в локальную папку (эфемерную на Railway).
+const VOLUME_PATH = process.env.RAILWAY_VOLUME_MOUNT_PATH;
+export const DATA_DIR =
+  process.env.DATA_DIR ||
+  (VOLUME_PATH ? path.join(VOLUME_PATH, 'atiya') : path.join(__dirname, '..', 'data'));
+
+// Данные переживают деплой только если лежат на смонтированном Volume.
+export const DATA_IS_PERSISTENT = !!VOLUME_PATH && DATA_DIR.startsWith(VOLUME_PATH);
+
 export const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
 mkdirSync(UPLOAD_DIR, { recursive: true });
 

@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import { listProducts, getProduct, listCategories } from '../db';
+import { listProducts, getProduct, listCategories, DATA_IS_PERSISTENT } from '../db';
 import { config } from '../config';
 
 export async function publicRoutes(app: FastifyInstance) {
@@ -7,6 +7,13 @@ export async function publicRoutes(app: FastifyInstance) {
     brand: config.brand,
     currency: config.currency,
     whatsapp: config.whatsappNumber,
+  }));
+
+  // Диагностика хранилища: persistent=true → данные на Volume и переживают деплой
+  app.get('/api/health', async () => ({
+    ok: true,
+    persistent: DATA_IS_PERSISTENT,
+    products: listProducts().length,
   }));
 
   app.get('/api/products', async (req) => {
